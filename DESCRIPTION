@@ -1,0 +1,16 @@
+Package: extendAUG
+Title: A Extension of the augmented estimation procedure for EHR-based association studies
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "ZI",
+           family = "WANG",
+           role = c("aut", "cre"),
+           email = "ziwang89@pennmedicine.upenn.edu")
+Description: The objective of this package was to partially replicate and extend a novel 	procedure for reducing bias in estimated associations between risk factors and 		phenotypes in EHR data using an augmented estimator. We evaluated the method by 	varying sample size and adding an additional predictor contained certain missing 	values.
+License: `use_mit_license()`, `use_gpl3_license()` or friends to pick a
+    license
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+Imports: MASS, matlib, mice, wakefield, robustHD
