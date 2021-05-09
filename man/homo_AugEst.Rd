@@ -13,7 +13,7 @@ homo_AugEst(n = 2000, Nsim = 10, x_beta = 2, parallel_ifrun = FALSE)
 
 \item{x_beta}{coefficients of the covariates ("1" or "2":  1 -- coefficient of x1; 2 -- coefficient of x2)}
 
-\item{parallel_ifrun}{boolen condition}
+\item{parallel_ifrun}{boolean condition}
 }
 \value{
 Augmented estimator of three models for four size of validation set (m = 100, 200, 400, & 800)

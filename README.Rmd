@@ -1,0 +1,57 @@
+---
+output: github_document
+---
+
+
+# extendAUG
+
+
+The goal of extendAUG is to partial replicate and extend the work of 'An augmented estimation procedure for EHR-based association studies accounting for differential misclassification' (2020) "
+
+## Installation
+
+You can install the development version of extendAUG from [GitHub](https://github.com/ziwang89/extendAUG) with:
+```{r}
+# install.packages("devtools")
+devtools::install_github("ziwang89/extendAUG")
+```
+
+
+## Example
+
+There are four functions contained in the `extendAUG` R package, including `aug_function`, `data_generator`, `one_time_simulation`, and `homo_AugEst`. The main function to replicate and extend the simulation in the augmented estimation paper is `homo_AugEst` with adding additional covariate; the main function to generate the augmented estimators is `aug_function`. The `data_generator` can be used to generate the input data for `aug_function` in order to compute the augmented estimators, the variance of the estimators, and the confidence interval the estimators for 3-model settings. The usage details are introduced in the following sections. In these functions, `if else` and `tryCatch()` are used to insure that the function is able to handle the potential simulation errors in the inputs/arguments. Moreover, the simulation in parallel works for both Mac and Windows system. 
+
+Note*: this package passes all checks by R CMD check extendAUG_0.0.0.9000.tar.gz with no errors and no warnings. 
+
+Guided by JAMIA paper [@Tong2020], let's replicate Scenario 0 setting: Non-differential Misclassification of the simulation study in the original paper. Here, we focus on model comparison among Model(1), Model(2), and Model(4). Following the original assumptions, the authors set the full data set size is n = 5000, and the investigate validation sets of 4 sizes: m = 100, 200, 400, and 800 (i.e., the corresponding values of $\rho$ are 0.02, 0.04, 0.08, and 0.16). We choose the intercept $\beta_{0}$ to be -1.0, corresponding to a disease prevalence of 36.79%, the association parameters $\beta_{1}$ and $\beta_{2}$ were set to 0.5 and 1, respectively, corresponding to an odds ratio of 1.64 (a moderate effect size) and 2.7 (a relatively large effect size). The whole simulation code is wrapped into the `extendAUG` R package. The main `aug_function` function is designed for obtaining the proposed augmented estimator of EHR-based association studies accounting for non-differential misclassification. The main replication and extension of this simulation study can be done by calling function `homo_AugEst`. Then, we can directly get the simulation results for Scenario 0 setting in the augmented estimation paper. 
+
+```{r example}
+library(extendAUG)
+
+# Replication of Scenario 0: Not parallelized version
+example = homo_AugEst(n = 5000, Nsim = 100, x_beta = 1, parallel_ifrun = FALSE)
+# Replication of Scenario 0: parallelized version
+example = homo_AugEst(n = 5000, Nsim = 100, x_beta = 1, parallel_ifrun = TRUE)
+```
+
+The output data can be used to create a comparison plot of simulation results of 3 models (1), (2), and (4) as Figure 5 in the JAMIA paper.
+
+```{r plot code}
+# for the investigate validation sets of m = 100
+plot100.dat <- data.frame(example$sim_100)
+
+p <- ggplot(plot100.dat, aes(x= ind, y= values, fill= ind)) +
+  geom_boxplot(notch=TRUE,fill=c("#FFC0CB","#7F60E4","#5010F7")) +
+  labs(title="",x="", y = "Estimated Log Odds Ratio") +
+  geom_hline(yintercept = 1,linetype="dashed",size = 1.5) +  
+  ## yintercept = 0.5 and 1 for beta1 corresponding to b1 and b2 , respectively
+  theme_classic(base_size=40) +
+  theme(axis.text.x = element_text(angle = 40, hjust = 1)) + 
+  ylim(0,2) 
+
+print(p)
+```
+
+Ref:
+Tong, J., Huang, J., Chubak, J., Wang, X., Moore, J. H., Hubbard, R. A., & Chen, Y. (2020). An augmented estimation procedure for EHR-based association studies accounting for differential misclassification. Journal of the American Medical Informatics Association, 27(2), 244–253. https://doi.org/10.1093/jamia/ocz180
+

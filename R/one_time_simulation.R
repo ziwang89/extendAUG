@@ -15,7 +15,7 @@
 
 one_time_simulation <- function(Nsim = 1, n = 2000 , x_beta = 2){
 
-  niters = Nsim
+  niters = 1
 
   se1 = 0.90 # sensitivity
   sp1 = 0.95 # specificity

@@ -3,7 +3,7 @@
 #' @param Nsim number of iterations: integer
 #' @param n size of full data: integer, greater than 1000 (i.e., 2,000, 5,000, 10,000 )
 #' @param x_beta coefficients of the covariates ("1" or "2":  1 -- coefficient of x1; 2 -- coefficient of x2)
-#' @param parallel_ifrun boolen condition
+#' @param parallel_ifrun boolean condition
 #'
 #' @return Augmented estimator of three models for four size of validation set (m = 100, 200, 400, & 800)
 #' @import matlib MASS mice robustHD parallel
@@ -77,12 +77,12 @@ homo_AugEst <- function(n = 2000, Nsim = 10, x_beta = 2, parallel_ifrun = FALSE)
 
 
               if (Sys.info()[1] == "Windows"){
-                cl = makeCluster(detectCores()-2)
+                cl = makeCluster(detectCores()/2)
                 clusterSetRNGStream(cl, iseed=2021)
                 sim_results = parLapply(cl, 1:Nsim, one_time_simulation, n=n , x_beta = x_beta)
                 stopCluster(cl)
               } else {
-                sim_results = mclapply (1:Nsim,  mc.cores=16, one_time_simulation, n = n, x_beta = x_beta)
+                sim_results = mclapply(1:Nsim, mc.cores= detectCores()/2, one_time_simulation, n = n, x_beta = x_beta)
               }
 
               for (i in 1:Nsim) {
@@ -115,4 +115,5 @@ homo_AugEst <- function(n = 2000, Nsim = 10, x_beta = 2, parallel_ifrun = FALSE)
 
 
 }
+
 
