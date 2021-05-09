@@ -13,7 +13,7 @@ The goal of extendAUG is to partial replicate and extend the work of 'An augment
 You can install the development version of extendAUG from [GitHub](https://github.com/ziwang89/extendAUG) with:
 ```{r}
 # install.packages("devtools")
-devtools::install_github("ziwang89/extendAUG")
+#devtools::install_github("ziwang89/extendAUG")
 ```
 
 
@@ -31,25 +31,29 @@ library(extendAUG)
 # Replication of Scenario 0: Not parallelized version
 example = homo_AugEst(n = 5000, Nsim = 100, x_beta = 1, parallel_ifrun = FALSE)
 # Replication of Scenario 0: parallelized version
-example = homo_AugEst(n = 5000, Nsim = 100, x_beta = 1, parallel_ifrun = TRUE)
+example = homo_AugEst(n = 2000, Nsim = 100, x_beta = 1, parallel_ifrun = TRUE)
 ```
 
 The output data can be used to create a comparison plot of simulation results of 3 models (1), (2), and (4) as Figure 5 in the JAMIA paper.
 
 ```{r plot code}
 # for the investigate validation sets of m = 100
-plot100.dat <- data.frame(example$sim_100)
+plot200.dat <- data.frame(example$sim_200)
 
-p <- ggplot(plot100.dat, aes(x= ind, y= values, fill= ind)) +
+p <- ggplot(plot200.dat, aes(x= ind, y= values, fill= ind)) +
   geom_boxplot(notch=TRUE,fill=c("#FFC0CB","#7F60E4","#5010F7")) +
   labs(title="",x="", y = "Estimated Log Odds Ratio") +
-  geom_hline(yintercept = 1,linetype="dashed",size = 1.5) +  
+  geom_hline(yintercept = 0.5,linetype="dashed",size = 1.5) +  
   ## yintercept = 0.5 and 1 for beta1 corresponding to b1 and b2 , respectively
   theme_classic(base_size=40) +
   theme(axis.text.x = element_text(angle = 40, hjust = 1)) + 
-  ylim(0,2) 
+  ylim(0,1) 
 
+pdf("~/Dropbox/penn_master/BSTA670_ProgComput/FINAL_PROJECT/2000_400beta1", width= 12, height = 9)
+p
+dev.off()
 print(p)
+
 ```
 
 Ref:
