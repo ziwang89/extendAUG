@@ -1,14 +1,16 @@
 #' @title Run one-time simulation for extendAUG
 #'
 #' @param Nsim number of iterations: integer,1
-#' @param n size of full data: integer (i.e., 2,000,5,000,10,000)
+#' @param n size of full data: integer, greater than 1000 (i.e., 2,000, 5,000, 10,000)
 #' @param x_beta coefficients of the covariates ("1" or "2":  1 -- coefficient of x1; 2 -- coefficient of x2)
 #'
-#' @return Augmented estimator of three models for four size of validation set (m = 100,200, 400, &800)
-#' @import matlib MASS wakefield mice robustHD mice
+#' @return Augmented estimator of three models for four size of validation set (m = 100, 200, 400, & 800)
+#' @import matlib MASS robustHD mice parallel
 #' @importFrom mice complete
 #' @importFrom wakefield r_sample_binary
 #' @importFrom robustHD standardize
+#' @importFrom stats glm qnorm rbinom
+#' @importFrom utils stack
 #' @export
 
 one_time_simulation <- function(Nsim = 1, n = 2000 , x_beta = 2){
@@ -90,7 +92,7 @@ one_time_simulation <- function(Nsim = 1, n = 2000 , x_beta = 2){
     x_temp = cbind(x1,x2)
     #summary(x_temp)
     # Imputing Missing Data
-    tempDate <- mice(x_temp, print = FALSE)
+    tempDate <- mice(x_temp, printFlag = FALSE)
     #summary(tempDate)
     completedData <- complete(tempDate,1)
     #summary(completedData)

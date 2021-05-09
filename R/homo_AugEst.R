@@ -1,21 +1,21 @@
 #' @title Run extendAUG simulation (Replication and Extension of the Augmented Estimation)
 #'
 #' @param Nsim number of iterations: integer
-#' @param n size of full data: integer (i.e., 2,000,5,000,10,000)
+#' @param n size of full data: integer, greater than 1000 (i.e., 2,000, 5,000, 10,000 )
 #' @param x_beta coefficients of the covariates ("1" or "2":  1 -- coefficient of x1; 2 -- coefficient of x2)
+#' @param parallel_ifrun boolen condition
 #'
-#' @return Augmented estimator of three models for four size of validation set (m = 100,200, 400, &800)
-#' @import matlib MASS wakefield mice robustHD mice
+#' @return Augmented estimator of three models for four size of validation set (m = 100, 200, 400, & 800)
+#' @import matlib MASS mice robustHD parallel
 #' @importFrom mice mice complete
 #' @importFrom wakefield r_sample_binary
 #' @importFrom robustHD standardize
-#' @importFrom stats glm
+#' @importFrom stats glm qnorm rbinom
+#' @importFrom utils stack
 #' @export
 #'
 homo_AugEst <- function(n = 2000, Nsim = 10, x_beta = 2, parallel_ifrun = FALSE){
 
-
-  ### -----------
 
   if (is.infinite(n) | n%%1 !=0){
     stop("Error: n (Size of Full Data) should be a finite integer")

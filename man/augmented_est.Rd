@@ -7,7 +7,7 @@
 augmented_est(m, x, s, y, val_x, val_s, val_y)
 }
 \arguments{
-\item{m}{size of validation set}
+\item{m}{size of validation set (i.e., 100, 200, 400, & 800)}
 
 \item{x}{n*i matrix (predictors with dim n: size of full data times i: num of predictors)}
 

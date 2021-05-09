@@ -1,6 +1,6 @@
 #' @title Main augmented estimate function for extendAUG
 #'
-#' @param m size of validation set
+#' @param m size of validation set (i.e., 100, 200, 400, & 800)
 #' @param x n*i matrix (predictors with dim n: size of full data times i: num of predictors)
 #' @param s surrogate phenotypes
 #' @param y true phenotypes (with NA)
@@ -9,8 +9,9 @@
 #' @param val_y value of y
 #'
 #' @return estimates, variance, and ci of three models (M1 valid, M2 native & M4 augment)
-#' @import matlib MASS
-#' @importFrom stats glm
+#' @import matlib MASS parallel
+#' @importFrom stats glm qnorm rbinom
+#' @importFrom utils stack
 #' @export
 
 
@@ -45,6 +46,8 @@ augmented_est <- function(m, x, s, y, val_x, val_s, val_y){
   # Point estimate for Model(2)
   gamma_bar <- glm3$coefficients
   var_gamma_bar <- summary(glm3)$coefficients[,2]**2
+
+  id <- sample(1:n, m, replace = FALSE)
 
   ## Preparation for Model(4) the augmented estimator
   ####################################################

@@ -7,9 +7,9 @@
 data_generator(n = 2000, m = 100)
 }
 \arguments{
-\item{n}{size of full data}
+\item{n}{size of full data: integer, greater than 1000 (i.e., 2,000, 5,000, 10,000)}
 
-\item{m}{size of validation set}
+\item{m}{size of validation set (i.e., 100, 200, 400, & 800)}
 }
 \value{
 validation matrix of x, y, s, and their values (for augmented_est function)

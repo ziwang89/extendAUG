@@ -1,13 +1,15 @@
 #' @title Data generator function for extendAUG
 #'
-#' @param n size of full data
-#' @param m size of validation set
+#' @param n size of full data: integer, greater than 1000 (i.e., 2,000, 5,000, 10,000)
+#' @param m size of validation set (i.e., 100, 200, 400, & 800)
 #'
 #' @return validation matrix of x, y, s, and their values (for augmented_est function)
-#' @import matlib MASS wakefield mice robustHD mice
+#' @import matlib MASS mice robustHD parallel
 #' @importFrom mice complete
 #' @importFrom wakefield r_sample_binary
 #' @importFrom robustHD standardize
+#' @importFrom stats qnorm rbinom
+#' @importFrom utils stack
 #' @export
 
 
@@ -24,8 +26,6 @@ data_generator <- function(n = 2000, m = 100){
   beta <- c(b0,b1,b2)
   # beta <- c(b0,b1)
   l = length(beta)
-
-  index = index + 1
 
   print(paste("data size is ", n,"; betas are ", b0,", ", b1, ", ", b2,"; m is ", m, sep = ""))
 
@@ -73,7 +73,7 @@ data_generator <- function(n = 2000, m = 100){
   x_temp = cbind(x1,x2)
   #summary(x_temp)
   # Imputing Missing Data
-  tempDate <- mice(x_temp, print = FALSE)
+  tempDate <- mice(x_temp, printFlag = FALSE)
   #summary(tempDate)
   completedData <- complete(tempDate,1)
   #summary(completedData)
